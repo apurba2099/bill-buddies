@@ -1,39 +1,28 @@
 import { useState } from "react";
-
-const initialFriends = [
-  {
-    id: 1111,
-    name: "Apurba",
-    image: "https://i.pravatar.cc/48?u=118836",
-    balance: -7,
-  },
-  {
-    id: 2222,
-    name: "John",
-    image: "https://i.pravatar.cc/48?u=933372",
-    balance: 20,
-  },
-  {
-    id: 3333,
-    name: "Anthony",
-    image: "https://i.pravatar.cc/48?u=499476",
-    balance: 0,
-  },
-];
-
+import { initialFriends } from "./data";
 export default function App() {
+  //Add create friend state
+  const [friends, setFriends] = useState(initialFriends);
   const [showAddFriend, setShowAddFriend] = useState(false);
 
-  function handelShowFriend() {
+  //Handle to render the friends in UI
+  function handleShowFriend() {
     setShowAddFriend(!showAddFriend);
   }
+
+  // Handle to Add new friends in UI
+  function handleAddFriend(newFriend) {
+    setFriends((prevFriends) => [...prevFriends, newFriend]);
+    setShowAddFriend(false);
+  }
+
   return (
     <>
       <div className="app">
         <div className="sidebar">
-          <FriendList />
-          {showAddFriend && <FormAddFriend />}
-          <Button onClick={handelShowFriend}>
+          <FriendList friends={friends} />
+          {showAddFriend && <FormAddFriend onAddFriend={handleAddFriend} />}
+          <Button onClick={handleShowFriend}>
             {!showAddFriend ? "Add Friend" : "Close"}
           </Button>
         </div>
@@ -43,12 +32,11 @@ export default function App() {
   );
 }
 
-function FriendList() {
-  const friends = initialFriends;
+function FriendList({ friends }) {
   return (
     <ul>
       {friends.map((friend) => (
-        <Friend friend={friend} key={friend.id} />
+        <Friend key={friend.id} friend={friend} />
       ))}
     </ul>
   );
@@ -77,6 +65,7 @@ function Friend({ friend }) {
   );
 }
 
+//Button Component
 function Button({ children, onClick }) {
   return (
     <button className="button" onClick={onClick}>
@@ -85,14 +74,44 @@ function Button({ children, onClick }) {
   );
 }
 
-function FormAddFriend() {
+//Add Friend Section
+function FormAddFriend({ onAddFriend }) {
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("https://i.pravatar.cc/48");
+
+  // Submit function on form
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    //guard clause!
+    if (!name || !image) return;
+    const id = crypto.randomUUID(); //Its a method of in built browser feature to make a random ID
+    const newFriend = {
+      id,
+      name,
+      image: `${image}?=${id}`,
+      balance: 0,
+    };
+    onAddFriend(newFriend);
+
+    setName("");
+    setImage("https://i.pravatar.cc/48");
+  }
   return (
-    <form className="form-add-friend">
+    <form className="form-add-friend" onSubmit={handleSubmit}>
       <label>🫂Friend name</label>
-      <input type="text" />
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
 
       <label>🌃Image URL</label>
-      <input type="text" />
+      <input
+        type="text"
+        value={image}
+        onChange={(e) => setImage(e.target.value)}
+      />
       <Button>Add</Button>
     </form>
   );
