@@ -18,15 +18,40 @@ html {
 }
 
 body {
-  height: 100vh;
+  /* height: 100vh; */
   color: #495057;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #f8b12c;
+  min-height: 100vh; /* Ensure body takes full viewport height */
+  padding: 20px; /* Add some padding to the body */
+}
+
+.container {
+  width: 980px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 26px;
+  margin: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+.heading {
+  font-size: 2.8rem;
+  padding: 8px 0;
+  text-align: center; /* Center heading by default */
+}
+
+.heading > h2 > span {
+  color: #ff922b;
 }
 
 .app {
-  min-height: 66vh;
   display: grid;
   grid-template-columns: 34rem 44rem;
   column-gap: 4rem;
@@ -56,8 +81,7 @@ body {
   gap: 0.4rem;
   font-size: 1.4rem;
   margin-bottom: 2rem;
-
-  overflow-y: scroll;
+  overflow-y: auto; /* Changed to auto for better mobile scrolling */
   max-height: 250px;
 }
 
@@ -66,7 +90,6 @@ body {
   grid-template-columns: 4.8rem 1fr auto;
   align-items: center;
   column-gap: 1.6rem;
-
   padding: 1.2rem;
   border-radius: 7px;
   transition: 0.5s;
@@ -117,7 +140,6 @@ form {
   display: grid;
   align-items: center;
   gap: 1.2rem;
-
   background-color: var(--color-lightest);
   border-radius: 7px;
 }
@@ -127,6 +149,7 @@ form {
   margin-bottom: 1.6rem;
   padding: 1.2rem;
 }
+
 .form-split-bill {
   grid-template-columns: 1fr 12rem;
   padding: 3.2rem 4rem;
@@ -171,14 +194,124 @@ form h2 {
   text-transform: uppercase;
   letter-spacing: -0.5px;
   margin-bottom: 1.6rem;
+  text-align: center; /* Center form headings */
 }
 
-@media screen and (max-width: 420px) {
+/* -------------------------------------- */
+/* Mobile Responsiveness */
+/* -------------------------------------- */
+
+/* Styles for screens between 400px and 720px */
+@media screen and (min-width: 400px) and (max-width: 720px) {
+  html {
+    font-size: 56.25%; /* Adjust base font size for smaller screens */
+  }
+
+  body {
+    padding: 15px;
+  }
+
+  .container {
+    width: 95%; /* Adjust width to be a percentage of the viewport */
+    max-width: 600px; /* Set a max-width to prevent it from getting too wide on larger "mobile" screens */
+    position: static; /* Remove absolute positioning */
+    transform: none; /* Remove transform */
+    margin: 20px auto; /* Center the container with auto margins */
+    padding: 20px;
+  }
+
+  .heading {
+    font-size: 2.2rem;
+  }
+
   .app {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: flex; /* Change to flexbox for column layout */
     flex-direction: column;
-    gap: 30px;
+    gap: 30px; /* Reduce gap between sections */
+    align-items: center; /* Center items in the flex container */
+  }
+
+  .sidebar {
+    width: 100%; /* Make sidebar take full width */
+  }
+
+  .sidebar ul {
+    max-height: 200px; /* Adjust max height for friend list */
+  }
+
+  .sidebar > .button {
+    float: none; /* Remove float */
+    display: block; /* Make it a block element */
+    margin: 1.5rem auto 0; /* Center the button */
+    width: fit-content; /* Adjust width to fit content */
+  }
+
+  .form-add-friend,
+  .form-split-bill {
+    grid-template-columns: 1fr; /* Stack form elements vertically */
+    padding: 2rem;
+    width: 100%; /* Make forms take full width */
+  }
+
+  form .button {
+    grid-column: 1; /* Place button in the first column */
+    margin-top: 1.2rem; /* Add more top margin */
+    width: 100%; /* Make button full width */
+  }
+
+  input,
+  select {
+    font-size: 1.4rem;
+    padding: 0.8rem;
+  }
+}
+
+/* Specific adjustments for smaller screens (e.g., typical phone sizes up to 400px) */
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 50%; /* Further reduce base font size for very small screens */
+  }
+
+  body {
+    padding: 10px;
+  }
+
+  .container {
+    padding: 15px;
+    margin: 15px auto;
+  }
+
+  .heading {
+    font-size: 2rem;
+  }
+
+  .sidebar ul {
+    max-height: 180px; /* Further adjust max height for friend list */
+  }
+
+  .sidebar li {
+    grid-template-columns: 4rem 1fr auto; /* Adjust image size for smaller screens */
+    column-gap: 1rem;
+    padding: 1rem;
+  }
+
+  .sidebar li img {
+    width: 100%;
+  }
+
+  .button {
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+  }
+
+  input,
+  select {
+    font-size: 1.3rem;
+    padding: 0.6rem;
+  }
+
+  form h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
   }
 }
